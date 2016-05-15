@@ -1,0 +1,11 @@
+viikko01-Viikko01_000.Hiekkalaatikko/
+*.jar
+*.xml
+*.json
+*.mf
+*.properties
+*/test/*Test.java
+*.jpg
+/test/
+*/test/*
+*.png
