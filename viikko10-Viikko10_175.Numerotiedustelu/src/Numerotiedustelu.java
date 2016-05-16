@@ -1,37 +1,56 @@
 
-import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Numerotiedustelu {
-    private Scanner lukija;
+    
+    private List<Henkilo> henkilot;
     
     public Numerotiedustelu() {
-        this.lukija = new Scanner(System.in);
+        this.henkilot = new ArrayList<>();
     }
     
-    public void kaynnista() {
-        System.out.println("numerotiedustelu");
-        tulostaValikko();
+    public void lisaaNumero(String nimi, String numero) {
         
-        while(true) {
-            String syote = this.lukija.nextLine();
-
-            if(syote.equalsIgnoreCase("X")) {
-                return;
-            }
-            
-            if(syote.equals("1")) {
-                
-            }
-            
+        if(!this.henkilot.contains(nimi)) {
+            this.henkilot.add(new Henkilo(nimi));
         }
         
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
+                hk.lisaaNumero(numero);
+            }
+        }
     }
     
-    private void tulostaValikko() {
-        System.out.println("käytettävissä oleva komennot");
-        System.out.println("1 lisää numero");
-        System.out.println("2 hae numerot");
-        System.out.println("X lopeta");
+    public List<String> haeNumeroaNimella(String nimi) {
+        
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
+                return hk.haeNumerot();
+            }
+        }
+        return null;
     }
+    
+    public String haeNimeaNumerolla(String numero) {
+        
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNumerot().contains(numero)) {
+                return hk.haeNimi();
+            }
+        }
+        
+        return null;
+    }
+    
+    public void lisaaOsoite(String nimi, String katu, String kaupunki) {
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
+                hk.lisaaOsoite(katu, kaupunki);
+            }
+        }
+    }
+    
     
 }
