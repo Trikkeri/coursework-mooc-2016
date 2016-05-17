@@ -1,6 +1,7 @@
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Numerotiedustelu {
     
@@ -48,6 +49,23 @@ public class Numerotiedustelu {
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNimi().equalsIgnoreCase(nimi)) {
                 hk.lisaaOsoite(katu, kaupunki);
+            }
+        }
+    }
+    
+    public Map<String, String> haeHenkilonOsoitteet(String nimi) {
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
+                return hk.haeOsoitteet();
+            }
+        }
+        return null;
+    }
+    
+    public void poistaHenkilo(String nimi) {
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
+                this.henkilot.remove(hk);
             }
         }
     }

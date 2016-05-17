@@ -1,6 +1,9 @@
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Scanner;
 
 public class Kayttoliittyma {
@@ -42,8 +45,14 @@ public class Kayttoliittyma {
                 lisaaOsoite();
             }
             
+            if(syote.equals("5")) {
+                tulostaHenkilonTiedot();
+            }
+            
+            if(syote.equals("6")) {
+                kyselePoistettavaHenkilo();
+            }
         }
-        
     }
     
     private void tulostaValikko() {
@@ -52,6 +61,9 @@ public class Kayttoliittyma {
         System.out.println("2 hae numerot");
         System.out.println("3 hae puhelinnumeroa vastaava henkilö");
         System.out.println("4 lisää osoite");
+        System.out.println("5 hae henkilön tiedot");
+        System.out.println("6 poista henkilön tiedot");
+        System.out.println("7 filtteröity listaus");
         System.out.println("X lopeta");
     }
     
@@ -96,11 +108,41 @@ public class Kayttoliittyma {
         String nimi = this.lukija.nextLine();
         System.out.print("katu: ");
         String katu = this.lukija.nextLine();
-        System.out.println("kaupunki");
+        System.out.print("kaupunki: ");
         String kaupunki = this.lukija.nextLine();
         
         this.numerotiedustelu.lisaaOsoite(nimi, katu, kaupunki);
+    }
+    
+    private void tulostaHenkilonTiedot() {
+        System.out.print("kenen: ");
+        String nimi = this.lukija.nextLine();
         
+        Map<String, String> osoitteet = new HashMap<>();
+        osoitteet = this.numerotiedustelu.haeHenkilonOsoitteet(nimi);
+
+        if(this.numerotiedustelu.haeHenkilonOsoitteet(nimi) == null || osoitteet.isEmpty()) {
+            System.out.print("  osoite ei tiedossa\n");
+        } else {
+            System.out.print("  osoite: ");
+            for(Entry<String, String> osoite : osoitteet.entrySet()) {
+            System.out.print(osoite.getKey() + " ");
+            System.out.print(osoite.getValue() + "\n");
+            }
+        }
+
+        System.out.print("  puhelinnumerot: ");
+        if(this.numerotiedustelu.haeNumeroaNimella(nimi) == null) {
+            System.out.print("\n  ei puhelinta\n");
+        } else {
+            System.out.println(this.numerotiedustelu.haeNumeroaNimella(nimi));
+        }
+    }
+    
+    private void kyselePoistettavaHenkilo() {
+        System.out.print("kenet: ");
+        String nimi = this.lukija.nextLine();
+        this.numerotiedustelu.poistaHenkilo(nimi);
     }
     
 }
