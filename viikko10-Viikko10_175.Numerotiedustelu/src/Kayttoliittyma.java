@@ -118,25 +118,34 @@ public class Kayttoliittyma {
         System.out.print("kenen: ");
         String nimi = this.lukija.nextLine();
         
-        Map<String, String> osoitteet = new HashMap<>();
-        osoitteet = this.numerotiedustelu.haeHenkilonOsoitteet(nimi);
+        if(this.numerotiedustelu.onkoHenkiloOlemassa(nimi)) {
+            
+            Map<String, String> osoitteet = new HashMap<>();
+            osoitteet = this.numerotiedustelu.haeHenkilonOsoitteet(nimi);
 
-        if(this.numerotiedustelu.haeHenkilonOsoitteet(nimi) == null || osoitteet.isEmpty()) {
-            System.out.print("  osoite ei tiedossa\n");
-        } else {
-            System.out.print("  osoite: ");
-            for(Entry<String, String> osoite : osoitteet.entrySet()) {
-            System.out.print(osoite.getKey() + " ");
-            System.out.print(osoite.getValue() + "\n");
+            if(this.numerotiedustelu.haeHenkilonOsoitteet(nimi) == null || osoitteet.isEmpty()) {
+                System.out.print("  osoite ei tiedossa\n");
+            } else {
+                System.out.print("  osoite: ");
+                for(Entry<String, String> osoite : osoitteet.entrySet()) {
+                    System.out.print(osoite.getKey() + " ");
+                    System.out.print(osoite.getValue() + "\n");
+                }
             }
-        }
-
-        System.out.print("  puhelinnumerot: ");
-        if(this.numerotiedustelu.haeNumeroaNimella(nimi) == null) {
-            System.out.print("\n  ei puhelinta\n");
+            
+            List<String> numerot = new ArrayList<>();
+            numerot = this.numerotiedustelu.haeNumeroaNimella(nimi);
+            System.out.print("  puhelinnumerot: ");
+            if(this.numerotiedustelu.haeNumeroaNimella(nimi) == null || numerot.isEmpty()) {
+                System.out.print("\n  ei puhelinta\n");
+            } else {
+                
+                System.out.println(this.numerotiedustelu.haeNumeroaNimella(nimi));
+            }
+            
         } else {
-            System.out.println(this.numerotiedustelu.haeNumeroaNimella(nimi));
-        }
+            System.out.print("  ei löytynyt\n");
+        }  
     }
     
     private void kyselePoistettavaHenkilo() {

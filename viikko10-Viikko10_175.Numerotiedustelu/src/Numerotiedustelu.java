@@ -13,9 +13,7 @@ public class Numerotiedustelu {
     
     public void lisaaNumero(String nimi, String numero) {
         
-        if(!this.henkilot.contains(nimi)) {
-            this.henkilot.add(new Henkilo(nimi));
-        }
+        lisaaHenkiloJosEiOlemassa(nimi);  
         
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNimi().equalsIgnoreCase(nimi)) {
@@ -24,18 +22,16 @@ public class Numerotiedustelu {
         }
     }
     
-    public List<String> haeNumeroaNimella(String nimi) {
-        
-        for(Henkilo hk : this.henkilot) {
-            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
-                return hk.haeNumerot();
-            }
+    public List<String> haeNumeroaNimella(String nimi) { 
+ 
+        if(onkoHenkiloOlemassa(nimi)) {
+            Henkilo hk = palautaHenkiloOlioJosOlemassa(nimi);
+            return hk.haeNumerot();
         }
         return null;
     }
     
     public String haeNimeaNumerolla(String numero) {
-        
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNumerot().contains(numero)) {
                 return hk.haeNimi();
@@ -46,10 +42,18 @@ public class Numerotiedustelu {
     }
     
     public void lisaaOsoite(String nimi, String katu, String kaupunki) {
+        lisaaHenkiloJosEiOlemassa(nimi);
+        
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNimi().equalsIgnoreCase(nimi)) {
                 hk.lisaaOsoite(katu, kaupunki);
             }
+        }
+    }
+
+    private void lisaaHenkiloJosEiOlemassa(String nimi) {
+        if(!this.onkoHenkiloOlemassa(nimi)) {
+            this.henkilot.add(new Henkilo(nimi));
         }
     }
     
@@ -66,9 +70,26 @@ public class Numerotiedustelu {
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNimi().equalsIgnoreCase(nimi)) {
                 this.henkilot.remove(hk);
+                return;
             }
         }
     }
     
+    public boolean onkoHenkiloOlemassa(String nimi) {
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equals(nimi)) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+    private Henkilo palautaHenkiloOlioJosOlemassa(String nimi) {
+        for(Henkilo hk : this.henkilot) {
+            if(hk.haeNimi().equals(nimi)) {
+                return hk;
+            }
+        }
+        return null;
+    }
 }
