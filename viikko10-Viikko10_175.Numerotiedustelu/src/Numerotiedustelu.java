@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -12,20 +13,17 @@ public class Numerotiedustelu {
     }
     
     public void lisaaNumero(String nimi, String numero) {
-        
         lisaaHenkiloJosEiOlemassa(nimi);  
         
-        for(Henkilo hk : this.henkilot) {
-            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
-                hk.lisaaNumero(numero);
-            }
+        if(onkoHenkiloOlemassa(nimi)) {
+            Henkilo hk = palautaHenkiloHenkiloJosOlemassa(nimi);
+            hk.lisaaNumero(numero);
         }
     }
     
     public List<String> haeNumeroaNimella(String nimi) { 
- 
         if(onkoHenkiloOlemassa(nimi)) {
-            Henkilo hk = palautaHenkiloOlioJosOlemassa(nimi);
+            Henkilo hk = palautaHenkiloHenkiloJosOlemassa(nimi);
             return hk.haeNumerot();
         }
         return null;
@@ -44,10 +42,9 @@ public class Numerotiedustelu {
     public void lisaaOsoite(String nimi, String katu, String kaupunki) {
         lisaaHenkiloJosEiOlemassa(nimi);
         
-        for(Henkilo hk : this.henkilot) {
-            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
-                hk.lisaaOsoite(katu, kaupunki);
-            }
+        if(onkoHenkiloOlemassa(nimi)) {
+            Henkilo hk = palautaHenkiloHenkiloJosOlemassa(nimi);
+            hk.lisaaOsoite(katu, kaupunki);
         }
     }
 
@@ -58,21 +55,19 @@ public class Numerotiedustelu {
     }
     
     public Map<String, String> haeHenkilonOsoitteet(String nimi) {
-        for(Henkilo hk : this.henkilot) {
-            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
-                return hk.haeOsoitteet();
-            }
-        }
+        if(onkoHenkiloOlemassa(nimi)) {
+            Henkilo hk = palautaHenkiloHenkiloJosOlemassa(nimi);
+            return hk.haeOsoitteet();
+        }    
         return null;
     }
     
-    public void poistaHenkilo(String nimi) {
-        for(Henkilo hk : this.henkilot) {
-            if(hk.haeNimi().equalsIgnoreCase(nimi)) {
-                this.henkilot.remove(hk);
-                return;
-            }
-        }
+    public void poistaHenkilo(String nimi) {      
+        if(onkoHenkiloOlemassa(nimi)) {
+            Henkilo hk = palautaHenkiloHenkiloJosOlemassa(nimi);
+            this.henkilot.remove(hk);
+            return;
+        }    
     }
     
     public boolean onkoHenkiloOlemassa(String nimi) {
@@ -84,7 +79,7 @@ public class Numerotiedustelu {
         return false;
     }
     
-    private Henkilo palautaHenkiloOlioJosOlemassa(String nimi) {
+    private Henkilo palautaHenkiloHenkiloJosOlemassa(String nimi) {
         for(Henkilo hk : this.henkilot) {
             if(hk.haeNimi().equals(nimi)) {
                 return hk;
@@ -92,4 +87,25 @@ public class Numerotiedustelu {
         }
         return null;
     }
+    
+    public List<Henkilo> haeJaPalautaHenkiloJoissaSamaString(String hakusana) {
+        List<Henkilo> hakutulokset = new ArrayList<>();
+        
+        if(hakusana.isEmpty()) {
+            Collections.sort(henkilot);
+            return henkilot;
+        } else {
+            for(Henkilo hk : this.henkilot) {
+                if(hk.haeNimi().contains(hakusana) || 
+                        hk.haeNumerot().contains(hakusana) || 
+                        hk.haeOsoitteet().containsKey(hakusana) || 
+                        hk.haeOsoitteet().containsValue(hakusana)) {
+                    hakutulokset.add(hk);
+                }
+            }
+        }
+        Collections.sort(hakutulokset);
+        return hakutulokset;
+    }
+    
 }

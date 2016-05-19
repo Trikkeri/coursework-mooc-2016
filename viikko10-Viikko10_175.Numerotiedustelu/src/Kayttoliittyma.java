@@ -52,6 +52,10 @@ public class Kayttoliittyma {
             if(syote.equals("6")) {
                 kyselePoistettavaHenkilo();
             }
+            
+            if(syote.equals("7")) {
+                haeHakusanallaHenkilonTiedot();
+            }
         }
     }
     
@@ -123,29 +127,35 @@ public class Kayttoliittyma {
             Map<String, String> osoitteet = new HashMap<>();
             osoitteet = this.numerotiedustelu.haeHenkilonOsoitteet(nimi);
 
-            if(this.numerotiedustelu.haeHenkilonOsoitteet(nimi) == null || osoitteet.isEmpty()) {
-                System.out.print("  osoite ei tiedossa\n");
-            } else {
-                System.out.print("  osoite: ");
-                for(Entry<String, String> osoite : osoitteet.entrySet()) {
-                    System.out.print(osoite.getKey() + " ");
-                    System.out.print(osoite.getValue() + "\n");
-                }
-            }
+            tulostaHenkilonOsoitteet(nimi, osoitteet);
             
             List<String> numerot = new ArrayList<>();
             numerot = this.numerotiedustelu.haeNumeroaNimella(nimi);
-            System.out.print("  puhelinnumerot: ");
-            if(this.numerotiedustelu.haeNumeroaNimella(nimi) == null || numerot.isEmpty()) {
-                System.out.print("\n  ei puhelinta\n");
-            } else {
-                
-                System.out.println(this.numerotiedustelu.haeNumeroaNimella(nimi));
-            }
-            
+            tulostaHenkilonPuhelinnumerot(nimi, numerot);        
         } else {
             System.out.print("  ei löytynyt\n");
         }  
+    }
+
+    private void tulostaHenkilonPuhelinnumerot(String nimi, List<String> numerot) {
+        System.out.print("  puhelinnumerot: ");
+        if(this.numerotiedustelu.haeNumeroaNimella(nimi) == null || numerot.isEmpty()) {
+            System.out.print("\n  ei puhelinta\n");
+        } else {
+            System.out.println(this.numerotiedustelu.haeNumeroaNimella(nimi));
+        }
+    }
+
+    private void tulostaHenkilonOsoitteet(String nimi, Map<String, String> osoitteet) {
+        if(this.numerotiedustelu.haeHenkilonOsoitteet(nimi) == null || osoitteet.isEmpty()) {
+            System.out.print("  osoite ei tiedossa\n");
+        } else {
+            System.out.print("  osoite: ");
+            for(Entry<String, String> osoite : osoitteet.entrySet()) {
+                System.out.print(osoite.getKey() + " ");
+                System.out.print(osoite.getValue() + "\n");
+            }
+        }
     }
     
     private void kyselePoistettavaHenkilo() {
@@ -154,4 +164,21 @@ public class Kayttoliittyma {
         this.numerotiedustelu.poistaHenkilo(nimi);
     }
     
+    private void haeHakusanallaHenkilonTiedot() {
+        System.out.print("hakusana (jos tyhjä, listataan kaikki): ");
+        String hakusana = this.lukija.nextLine();
+        List<Henkilo> hakutulokset = new ArrayList<>();
+        
+        hakutulokset = this.numerotiedustelu.haeJaPalautaHenkiloJoissaSamaString(hakusana);
+        
+        if(hakutulokset.isEmpty()) {
+            System.out.print(" ei löytynyt");
+        } else {
+            for(Henkilo hk : hakutulokset) {
+                System.out.print("\n" + hk.haeNimi());
+                tulostaHenkilonOsoitteet(hk.haeNimi(), hk.haeOsoitteet());
+                tulostaHenkilonPuhelinnumerot(hk.haeNimi(), hk.haeNumerot());
+            }
+        }
+    }
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Henkilo {
+public class Henkilo implements Comparable<Henkilo> {
     private String nimi;
     private List<String> numerot;
     private Map<String, String> osoitteet;
@@ -35,5 +35,10 @@ public class Henkilo {
     
     public Map<String, String> haeOsoitteet() {
         return this.osoitteet;
+    }
+    
+    @Override
+    public int compareTo(Henkilo henkilo) {
+        return this.nimi.compareTo(henkilo.nimi);
     }
 }
