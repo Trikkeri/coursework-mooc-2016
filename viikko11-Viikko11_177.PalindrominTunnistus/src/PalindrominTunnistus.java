@@ -1,7 +1,4 @@
 
-import java.util.Collections;
-
-
 public class PalindrominTunnistus {
 
     public static void main(String[] args) {
