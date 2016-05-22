@@ -28,15 +28,29 @@ public class SuurimpienLukujenSumma {
         // toteuta metodin toiminnallisuus tänne
         List<Integer> isoimmatLuvut = new ArrayList<>();
         for(List<Integer> lista : lukulistat) {
-            palautaIsoinLuku(lista);
+            isoimmatLuvut.add(palautaIsoinLuku(lista));
         }
-        
-        return 0;
+        return summaaLuvut(isoimmatLuvut);
     }
     
-    private int palautaIsoinLuku(List<Integer> luvut) {
-        for (int i = 0; i < luvut.size(); i++) {
-            
+    private static int palautaIsoinLuku(List<Integer> luvut) {
+        int isoin = luvut.get(0);
+        
+        for (int i = 1; i < luvut.size(); i++) {
+            if(luvut.get(i) > isoin) {
+                isoin = luvut.get(i);
+            }
         }
+        return isoin;
+    }
+    
+    private static int summaaLuvut(List<Integer> lista) {
+        int summa = 0;
+        
+        for (int i = 0; i < lista.size(); i++) {
+            summa += lista.get(i);
+        }
+        
+        return summa;
     }
 }
