@@ -6,7 +6,6 @@ public class SuurimpienLukujenSumma {
 
     public static void main(String[] args) {
         // voit testata toteutuksesi toimintaa täällä
-
         List<Integer> luvut1 = new ArrayList<>();
         List<Integer> luvut2 = new ArrayList<>();
         luvut1.add(7);
@@ -50,7 +49,6 @@ public class SuurimpienLukujenSumma {
         for (int i = 0; i < lista.size(); i++) {
             summa += lista.get(i);
         }
-        
         return summa;
     }
 }
