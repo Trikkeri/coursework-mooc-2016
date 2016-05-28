@@ -19,6 +19,6 @@ public class Tuotevarasto extends Varasto {
     
     @Override
     public String toString() {
-        return this.nimi +": " + super.toString();
+        return this.nimi + ": " + super.toString();
     }   
 }

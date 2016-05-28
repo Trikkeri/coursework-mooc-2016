@@ -78,15 +78,15 @@ public class Muutoshistoria {
         ArrayList<Double> muutokset = new ArrayList<>();
  
         for (int i = 0; i < this.muutoshist.size(); i++) {
-            
             if(i < this.muutoshist.size() - 1) {
-                muutokset.add(this.muutoshist.get(i) - this.muutoshist.get(i + 1));
+                muutokset.add(Math.abs(this.muutoshist.get(i) - this.muutoshist.get(i + 1)));
             }
         }
         
         Collections.sort(muutokset);
-        
-        return Math.abs(muutokset.get(0));
+        Collections.reverse(muutokset);
+
+        return muutokset.get(0);
     }
     
     public double varianssi() {
