@@ -30,7 +30,7 @@ public class Maitosailio {
     public void lisaaSailioon(double maara) {
         
         if(this.paljonkoTilaaJaljella() < maara) {
-            this.saldo = 2000;
+            this.saldo = this.tilavuus;
             return;
         }
         
@@ -48,6 +48,7 @@ public class Maitosailio {
         }
     }
     
+    @Override
     public String toString() {
         return Math.ceil(this.saldo) + "/" + Math.ceil(this.tilavuus);
     }

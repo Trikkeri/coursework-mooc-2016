@@ -3,7 +3,7 @@ package maatilasimulaattori;
 import java.util.Random;
 
 public class Lehma implements Lypsava, Eleleva {
-    Random rng;
+    private Random rng;
     private String nimi;
     private double utareidenTilavuus;
     private double maitoaJaljella;
@@ -46,11 +46,22 @@ public class Lehma implements Lypsava, Eleleva {
 
     @Override
     public double lypsa() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        double otaMaidot = this.maitoaJaljella;
+        this.maitoaJaljella = 0;
+        return otaMaidot;
     }
 
     @Override
     public void eleleTunti() {
-        this.maitoaJaljella += 0.7 + this.rng.nextDouble() + 1;
+               
+        double vali = 2.0 - 0.7;
+        double arvottu = 0.7 + Math.random() * vali;
+        
+        if(arvottu + this.maitoaJaljella >= this.utareidenTilavuus) {
+            this.maitoaJaljella = this.utareidenTilavuus;
+            return;
+        }
+        
+        this.maitoaJaljella += arvottu;
     }
 }
