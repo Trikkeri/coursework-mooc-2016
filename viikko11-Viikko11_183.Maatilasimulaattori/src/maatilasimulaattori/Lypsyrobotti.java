@@ -1,6 +1,6 @@
 package maatilasimulaattori;
 
-public class Lypsyrobotti implements Lypsava {
+public class Lypsyrobotti {
 
     private Maitosailio maitosailio;
     
@@ -25,9 +25,4 @@ public class Lypsyrobotti implements Lypsava {
         
         this.maitosailio.lisaaSailioon(lypsava.lypsa());        
     }   
-
-    @Override
-    public double lypsa() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }
