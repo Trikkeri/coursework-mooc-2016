@@ -34,7 +34,15 @@ public class Tavara {
             return false;
         }
         
-        Tavara vertailtava = (Tavara) o;
+        if(getClass() != o.getClass()) {
+            return false;
+        }
+        
+        final Tavara vertailtava = (Tavara) o;
+        
+        if((this.nimi == null) ? (vertailtava.nimi != null) : !this.nimi.equals(vertailtava.nimi)) {
+            return false;
+        }
         
         if(this.nimi.equals(vertailtava.nimi) ) {
             return true;
