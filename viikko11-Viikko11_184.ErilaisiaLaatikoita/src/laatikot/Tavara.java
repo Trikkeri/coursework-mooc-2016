@@ -10,7 +10,9 @@ public class Tavara {
         this.nimi = nimi;
         this.paino = paino;
         
-        if(this.paino < 0) throw new IllegalArgumentException("Tavaran paino ei voi olla negatiivinen");
+        if(this.paino < 0) {
+            throw new IllegalArgumentException("Tavaran paino ei voi olla negatiivinen");
+        }
     }
 
     public Tavara(String nimi) {
