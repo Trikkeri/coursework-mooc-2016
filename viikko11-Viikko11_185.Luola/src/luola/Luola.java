@@ -9,10 +9,13 @@ public class Luola {
     private Pelimerkki[][] pelialue;
     private int leveys;
     private int korkeus;
+    private boolean hirvioitLiikkuvat;
     
     public Luola(int leveys, int korkeus, int hirvioita, int siirtoja, boolean hirvioitLiikkuvat) {
         this.siirtoja = siirtoja;
         this.pelialue = new Pelimerkki[leveys][korkeus];
+        this.hirvioitLiikkuvat = hirvioitLiikkuvat;
+        
         populoiPelialue();
     }
     
@@ -27,6 +30,7 @@ public class Luola {
             System.out.println("Mihin liikutaan (w, a, s, d)? ");
             syote = lukija.nextLine();
             liiku(syote);
+            tulostaPelialue();
         }
         
         
@@ -37,11 +41,11 @@ public class Luola {
     }
 
     private void tulostaPelialue() {
-        for (int i = 0; i < this.pelialue.length; i++) {
+        for (int x = 0; x < this.pelialue.length; x++) {
             //System.out.println(this.pelialue[i][0]);
             System.out.println("");
-            for (int j = 0; j < this.pelialue.length; j++) {
-                System.out.print(this.pelialue[i][j]);
+            for (int y = 0; y < this.pelialue.length; y++) {
+                System.out.print(this.pelialue[x][y]);
             }
         }
         System.out.print("\n\n");
@@ -50,11 +54,11 @@ public class Luola {
     private void populoiPelialue() {
         
         // Aluksi sijoitetaan pelialueelle 'tyhjät' kohdat
-        for (int i = 0; i < this.pelialue.length; i++) {
-            this.pelialue[0][i] = new Pelimerkki('.', i, 0);
+        for (int x = 0; x < this.pelialue.length; x++) {
+            this.pelialue[0][x] = new Pelimerkki('.', x, 0);
                 
-            for (int j = 0; j < this.pelialue.length; j++) {
-                this.pelialue[i][j] = new Pelimerkki('.', i, j);
+            for (int y = 0; y < this.pelialue.length; y++) {
+                this.pelialue[x][y] = new Pelimerkki('.', x, y);
             } 
         }
         
@@ -66,16 +70,34 @@ public class Luola {
     }
     
     public void liiku(String suunta) {
-        Pelimerkki pelaaja = selvitaPelaajanSijaintiTaulukossa();
+        //Pelimerkki pelaaja = selvitaPelaajanSijaintiTaulukossa();
+        Pelimerkki pelaaja = null;
+        Pelimerkki siirrettava = null;
+        
+        for (int x = 0; x < this.pelialue.length; x++) {
+            for (int y = 0; y < this.pelialue.length - 1; y++) {
+                if(this.pelialue[x][y].getTyyppi() == '@') {
+                    
+                    // Liikkuu oikealle
+                    pelaaja = this.pelialue[x][y];
+                    siirrettava = this.pelialue[x][y + 1];
+                    this.pelialue[x][y + 1] = pelaaja;
+                    this.pelialue[x][y] = siirrettava;
+                    
+                    return;
+                }
+            }
+        }
+        
     }
     
     private Pelimerkki selvitaPelaajanSijaintiTaulukossa() {
         Pelimerkki pelaaja = null;
         
-        for (int i = 0; i < this.pelialue.length; i++) {
-            for (int j = 0; j < this.pelialue.length; j++) {
-                if(this.pelialue[i][j].getTyyppi() == '@') {
-                    pelaaja = this.pelialue[i][j];
+        for (int x = 0; x < this.pelialue.length; x++) {
+            for (int y = 0; y < this.pelialue.length; y++) {
+                if(this.pelialue[x][y].getTyyppi() == '@') {
+                    pelaaja = this.pelialue[x][y];
                 }
             }
         }
