@@ -1,0 +1,12 @@
+package luola;
+
+import java.util.Scanner;
+
+public class Paaohjelma {
+
+    public static void main(String[] args) {
+        Scanner lukija = new Scanner(System.in);
+
+        new Luola(4, 5, 5, 14, true).run(lukija);
+    }
+}
