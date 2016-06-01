@@ -26,7 +26,7 @@ public class Luola {
         while(!syote.equals("q")) {
             System.out.println("Mihin liikutaan (w, a, s, d)? ");
             syote = lukija.nextLine();
-            siirraPelaajaa(syote);
+            liiku(syote);
         }
         
         
@@ -65,8 +65,21 @@ public class Luola {
      
     }
     
-    public void siirraPelaajaa(String suunta) {
+    public void liiku(String suunta) {
+        Pelimerkki pelaaja = selvitaPelaajanSijaintiTaulukossa();
+    }
+    
+    private Pelimerkki selvitaPelaajanSijaintiTaulukossa() {
+        Pelimerkki pelaaja = null;
         
+        for (int i = 0; i < this.pelialue.length; i++) {
+            for (int j = 0; j < this.pelialue.length; j++) {
+                if(this.pelialue[i][j].getTyyppi() == '@') {
+                    pelaaja = this.pelialue[i][j];
+                }
+            }
+        }
+        return pelaaja;
     }
     
 }
