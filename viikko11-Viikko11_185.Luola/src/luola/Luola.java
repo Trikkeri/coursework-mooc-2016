@@ -1,6 +1,8 @@
 package luola;
 
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Luola {
@@ -10,11 +12,13 @@ public class Luola {
     private int leveys;
     private int korkeus;
     private boolean hirvioitLiikkuvat;
+    private List<Pelimerkki> pelimerkit;
     
     public Luola(int leveys, int korkeus, int hirvioita, int siirtoja, boolean hirvioitLiikkuvat) {
         this.siirtoja = siirtoja;
         this.pelialue = new Pelimerkki[leveys][korkeus];
         this.hirvioitLiikkuvat = hirvioitLiikkuvat;
+        this.pelimerkit = new ArrayList<>();
         
         populoiPelialue();
     }
@@ -42,9 +46,8 @@ public class Luola {
 
     private void tulostaPelialue() {
         for (int x = 0; x < this.pelialue.length; x++) {
-            //System.out.println(this.pelialue[i][0]);
             System.out.println("");
-            for (int y = 0; y < this.pelialue.length; y++) {
+            for (int y = 0; y < this.pelialue[x].length; y++) {
                 System.out.print(this.pelialue[x][y]);
             }
         }
@@ -57,51 +60,152 @@ public class Luola {
         for (int x = 0; x < this.pelialue.length; x++) {
             this.pelialue[0][x] = new Pelimerkki('.', x, 0);
                 
-            for (int y = 0; y < this.pelialue.length; y++) {
+            for (int y = 0; y < this.pelialue[x].length; y++) {
                 this.pelialue[x][y] = new Pelimerkki('.', x, y);
             } 
         }
         
-        // Sijoitetaan pelialueelle pelaaja
-        this.pelialue[0][0] = new Pelimerkki('@', 0, 0);
+        // Sijoitetaan pelialueelle pelaaja ja taulukkoon talteen
+        Pelimerkki pelaaja = new Pelimerkki('@', 0, 0);
+        this.pelialue[0][0] = pelaaja;
+        this.pelimerkit.add(pelaaja);
         
         // Sijoitetaan pelialueelle satunnaisesti hirviöt
      
     }
     
     public void liiku(String suunta) {
-        //Pelimerkki pelaaja = selvitaPelaajanSijaintiTaulukossa();
         Pelimerkki pelaaja = null;
         Pelimerkki siirrettava = null;
         
-        for (int x = 0; x < this.pelialue.length; x++) {
-            for (int y = 0; y < this.pelialue.length - 1; y++) {
-                if(this.pelialue[x][y].getTyyppi() == '@') {
-                    
-                    // Liikkuu oikealle
-                    pelaaja = this.pelialue[x][y];
-                    siirrettava = this.pelialue[x][y + 1];
-                    this.pelialue[x][y + 1] = pelaaja;
-                    this.pelialue[x][y] = siirrettava;
-                    
-                    return;
-                }
+        int pelaajaSiirtyyX = 0;
+        int pelaajaSiirtyyY = 0;
+        
+        int siirrettavaSiirtyyX = 0;
+        int siirrettavaSiirtyyY = 0;
+        
+        // Pelaaja aina ensimmäinen listassa
+        pelaaja = this.pelimerkit.get(0);
+                     
+        if(suunta.equalsIgnoreCase("w")) {
+            
+            if(!siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja)) {
+                System.out.println(siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja));
+                return;
             }
+            
+            // Estetään pelaajaa suorittamasta siirtoa, joka vie pelaajan alueen ulkopuolelle yläsuunnasta
+//            if(pelaaja.getY() - 1 < 0) {
+//                System.out.println("Ei suoriteta, sillä tipahtaa ulos pelialuuelta");
+//                return;
+//            }
+            
+            pelaajaSiirtyyX = pelaaja.getX();
+            pelaajaSiirtyyY = pelaaja.getY() - 1;
+            
+            siirrettava = this.pelialue[pelaajaSiirtyyY][pelaajaSiirtyyX]; 
+            siirrettavaSiirtyyX = pelaaja.getX();
+            siirrettavaSiirtyyY = pelaaja.getY();
+            
+            suoritaSiirto(pelaaja, pelaajaSiirtyyX, pelaajaSiirtyyY, siirrettava, siirrettavaSiirtyyX, siirrettavaSiirtyyY);  
         }
         
-    }
-    
-    private Pelimerkki selvitaPelaajanSijaintiTaulukossa() {
-        Pelimerkki pelaaja = null;
-        
-        for (int x = 0; x < this.pelialue.length; x++) {
-            for (int y = 0; y < this.pelialue.length; y++) {
-                if(this.pelialue[x][y].getTyyppi() == '@') {
-                    pelaaja = this.pelialue[x][y];
-                }
+        if(suunta.equalsIgnoreCase("s")) {
+            
+            if(!siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja)) {
+                return;
             }
+            
+//            // Estetään pelaajaa suorittamasta siirtoa, joka vie pelaajan alueen ulkopuolelle alasuunnasta
+//            if(pelaaja.getY() + 1 == this.pelialue.length) {
+//                System.out.println("Ei suoriteta, sillä tipahtaa ulos pelialuuelta");
+//                return;
+//            }
+            
+            pelaajaSiirtyyX = pelaaja.getX();
+            pelaajaSiirtyyY = pelaaja.getY() + 1;
+            
+            siirrettava = this.pelialue[pelaajaSiirtyyY][pelaajaSiirtyyX]; 
+            siirrettavaSiirtyyX = pelaaja.getX();
+            siirrettavaSiirtyyY = pelaaja.getY();
+            
+            suoritaSiirto(pelaaja, pelaajaSiirtyyX, pelaajaSiirtyyY, siirrettava, siirrettavaSiirtyyX, siirrettavaSiirtyyY); 
         }
-        return pelaaja;
+        
+        if(suunta.equalsIgnoreCase("a")) {
+            
+            if(!siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja)) {
+                return;
+            }
+            
+//            // Estetään pelaajaa suorittamasta siirtoa, joka vie pelaajan alueen ulkopuolelle vasemmalta
+//            if(pelaaja.getX() - 1 < 0) {
+//                System.out.println("Ei suoriteta, sillä tipahtaa ulos pelialuuelta");
+//                return;
+//            }
+            
+            pelaajaSiirtyyX = pelaaja.getX() - 1;
+            pelaajaSiirtyyY = pelaaja.getY();
+            
+            siirrettava = this.pelialue[pelaajaSiirtyyY][pelaajaSiirtyyX]; 
+            siirrettavaSiirtyyX = pelaaja.getX();
+            siirrettavaSiirtyyY = pelaaja.getY();
+            
+            suoritaSiirto(pelaaja, pelaajaSiirtyyX, pelaajaSiirtyyY, siirrettava, siirrettavaSiirtyyX, siirrettavaSiirtyyY); 
+        }
+        
+        if(suunta.equalsIgnoreCase("d")) {
+            
+            if(!siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja)) {
+                System.out.println(siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja));
+                return;
+            }
+            
+//            // Estetään pelaajaa suorittamasta siirtoa, joka vie pelaajan alueen ulkopuolelle oikealta
+//            System.out.println(this.pelialue[pelaaja.getY()].length);
+//            if(pelaaja.getX() + 1 >= this.pelialue[pelaaja.getY()].length) {
+//                System.out.println("Ei suoriteta, sillä tipahtaa ulos pelialuuelta");
+//                return;
+//            }
+            
+            pelaajaSiirtyyX = pelaaja.getX() + 1;
+            pelaajaSiirtyyY = pelaaja.getY();
+            
+            siirrettava = this.pelialue[pelaajaSiirtyyY][pelaajaSiirtyyX]; 
+            siirrettavaSiirtyyX = pelaaja.getX();
+            siirrettavaSiirtyyY = pelaaja.getY();
+            
+            suoritaSiirto(pelaaja, pelaajaSiirtyyX, pelaajaSiirtyyY, siirrettava, siirrettavaSiirtyyX, siirrettavaSiirtyyY);
+        }
     }
-    
+
+    private void suoritaSiirto(Pelimerkki pelaaja, int pelaajaSiirtyyX, int pelaajaSiirtyyY, Pelimerkki siirrettava, int siirrettavaSiirtyyX, int siirrettavaSiirtyyY) {
+        pelaaja.setX(pelaajaSiirtyyX);
+        pelaaja.setY(pelaajaSiirtyyY);
+        this.pelialue[pelaajaSiirtyyY][pelaajaSiirtyyX] = pelaaja;
+        System.out.print("Pelaaja x " + pelaaja.getX());
+        System.out.print("Pelaaja y " + pelaaja.getY() + "\r");
+        
+        siirrettava.setX(siirrettavaSiirtyyX);
+        siirrettava.setY(siirrettavaSiirtyyY);
+        this.pelialue[siirrettavaSiirtyyY][siirrettavaSiirtyyX] = siirrettava;
+
+        System.out.print("Siirettava x " + siirrettava.getX());
+        System.out.print(" Siirrettava y " + siirrettava.getY()+ "\r");
+    }
+
+    private boolean siirtyykoPelimerkkiPelialueenUlkopuolelle(Pelimerkki pelaaja) {
+        // TODO: lisää parametri, jossa välitetään mitä liikkumissuuntaa ollaa tarkistamassa. Nykyratkaisu ei toimi, sillä jokin if menee aina läpi?
+        if(pelaaja.getY() - 1 < 0) {
+            return true;
+        } else if(pelaaja.getY() + 1 == this.pelialue.length) {
+            return true;
+        } else if(pelaaja.getX() - 1 < 0 ) {
+            return true;
+        } else if(pelaaja.getX() + 1 >= this.pelialue[pelaaja.getY()].length) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }
