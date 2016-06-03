@@ -15,4 +15,4 @@ Notable exercises can be found at last exercise of each week (week 7 and forward
 *
 *
 
-These excercises are large exercises where i have freely designed the program structure. Only appearance of the user interface and the required commands have been predefined. 
+These excercises are large exercises where i have freely designed the program structure. Only appearance of the user interface and required commands have been predefined. 
