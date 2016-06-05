@@ -30,11 +30,31 @@ public class Luola {
             System.out.println(this.siirtoja + "\n");
             tulostaSijainnit();
             tulostaPelialue();
-            syote = lukija.nextLine();
-            
+            syote = lukija.nextLine().toLowerCase();
+                      
+            // Pureskellaan merkkijonossa olevat merkit jokainen yksittäiseksi liikkuminkomennoksi
             for(char komento : syote.toCharArray()) {
+                
+                Suunta suunta = null;
+                
+                if(komento == 'w') {
+                    suunta = Suunta.YLOS;
+                }
+                
+                if(komento == 's') {
+                    suunta = Suunta.ALAS;
+                }
+                
+                if(komento == 'a') {
+                    suunta = Suunta.VASEN;
+                }
+                                
+                if(komento == 'd') {
+                    suunta = Suunta.OIKEA;
+                }
+                
                 // Liikutetaan pelaajaa, yksi merkki merkkijonossa vastaan yhtä siirtoa
-                this.pl.liiku(this.pl.getPelimerkit().get(0), komento, pelialue);
+                this.pl.liiku(this.pl.getPelimerkit().get(0), suunta, pelialue);
             }
             
             // Liikutetaan pelaajan siirtojen päätteeksi hirviöitä

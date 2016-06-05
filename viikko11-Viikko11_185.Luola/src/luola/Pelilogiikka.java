@@ -19,7 +19,7 @@ public class Pelilogiikka {
         this.pelimerkit.add(pm);
     }
     
-    public void liiku(Pelimerkki pelimerkki, char suunta, Pelimerkki[][] pelialue) {
+    public void liiku(Pelimerkki pelimerkki, Suunta suunta, Pelimerkki[][] pelialue) {
         Pelimerkki siirrettava = null;
         
         int pelimerkkiSiirtyyRivi = pelimerkki.getRivi();
@@ -31,26 +31,26 @@ public class Pelilogiikka {
         if(siirtyykoPelimerkkiPelialueenUlkopuolelle(pelimerkki, suunta, pelialue)) {
             return;
         }      
-                     
-        if(suunta == 'w') {
+        
+        if(suunta.equals(Suunta.YLOS)) {
             
             pelimerkkiSiirtyyRivi -= 1;
             siirrettava = pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
-        if(suunta == 's') {
+        if(suunta.equals(Suunta.ALAS)) {
             
             pelimerkkiSiirtyyRivi += 1;
             siirrettava = pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
-        if(suunta == 'a') {
+        if(suunta.equals(Suunta.VASEN)) {
             
             pelimerkkiSiirtyySarake -= 1;
             siirrettava = pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
-        if(suunta == 'd') {
+        if(suunta.equals(Suunta.OIKEA)) {
                        
             pelimerkkiSiirtyySarake += 1;
             siirrettava = pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake];       
@@ -81,27 +81,27 @@ public class Pelilogiikka {
         }
     }
     
-    private boolean siirtyykoPelimerkkiPelialueenUlkopuolelle(Pelimerkki pelimerkki, char suunta, Pelimerkki[][] pelialue) {
+    private boolean siirtyykoPelimerkkiPelialueenUlkopuolelle(Pelimerkki pelimerkki, Suunta suunta, Pelimerkki[][] pelialue) {
        
         boolean reunalla = false; 
         
         switch(suunta) {
-            case 'w':
+            case YLOS:
                 if(pelimerkki.getRivi() - 1 < 0) {
                     reunalla = true;  
                 }
                 break;
-            case 's':
+            case ALAS:
                 if(pelimerkki.getRivi() + 1 == pelialue.length) {
                     reunalla = true;
                 }
                 break;
-            case 'a':
+            case VASEN:
                 if(pelimerkki.getSarake() - 1 < 0) {
                     reunalla = true;
                 }
                 break;
-            case 'd':
+            case OIKEA:
                 if(pelimerkki.getSarake() + 1 >= pelialue[pelimerkki.getSarake()].length) {
                     reunalla = true;
                 }
@@ -131,22 +131,22 @@ public class Pelilogiikka {
                 
                 // Liiku ylös
                 if(arvottuLuku == 0) {
-                    liiku(pm, 'w', pelialue);
+                    liiku(pm, Suunta.YLOS, pelialue);
                 }
                 
                 // Liiku alas
                 if(arvottuLuku == 1 ) {
-                    liiku(pm, 's', pelialue);
+                    liiku(pm, Suunta.ALAS, pelialue);
                 }
                 
                 // Liiku vasemmalle
                 if(arvottuLuku == 2) {
-                    liiku(pm, 'd', pelialue);
+                    liiku(pm, Suunta.OIKEA, pelialue);
                 }
                 
                 // Liiku oikealle
                 if(arvottuLuku == 3) {
-                    liiku(pm, 'a', pelialue);
+                    liiku(pm, Suunta.VASEN, pelialue);
                 }
             }
         }
