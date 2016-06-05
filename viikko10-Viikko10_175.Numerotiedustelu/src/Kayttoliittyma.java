@@ -10,7 +10,7 @@ public class Kayttoliittyma {
     private Scanner lukija;
     private Numerotiedustelu numerotiedustelu;
     
-    public Kayttoliittyma(Scanner lukija,Numerotiedustelu numerotiedustelu) {
+    public Kayttoliittyma(Scanner lukija, Numerotiedustelu numerotiedustelu) {
         this.numerotiedustelu = numerotiedustelu;
         this.lukija = lukija;
     }
