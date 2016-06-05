@@ -2,6 +2,7 @@ package luola;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 public class Luola {
@@ -21,29 +22,41 @@ public class Luola {
     }
     
     public void run(Scanner lukija) {
-        System.out.println(this.siirtoja + "\n");
-        //tulostaSijainnit();
-        tulostaPelialue();
         
         String syote = "";
         
-        while(!syote.equals("q")) {
-            System.out.println("Mihin liikutaan (w, a, s, d)? ");
-            
+        while(this.siirtoja > 0 && this.pelimerkit.size() > 1) {
+            System.out.println(this.siirtoja + "\n");
+            tulostaSijainnit();
+            tulostaPelialue();
             syote = lukija.nextLine();
+            
             for(char komento : syote.toCharArray()) {
-                liiku(komento);
-                if(this.hirvioitLiikkuvat) {
-                    liikutaHirvioita(this.pelimerkit);
-                }
+                // Liikutetaan pelaajaa, yksi merkki merkkijonossa vastaan yhtä siirtoa
+                liiku(this.pelimerkit.get(0), komento);
             }
+            
+            // Liikutetaan pelaajan siirtojen päätteeksi hirviöitä
+            if(this.hirvioitLiikkuvat) {
+                liikutaHirvioita(this.pelimerkit);
+            }
+            
             this.siirtoja -= 1;
             tulostaPelialue();
         }
+        
+        if(this.siirtoja > 0) {
+            System.out.println("VOITIT");
+        } else {
+            System.out.println("HÄVISIT");
+        }
+        
     }
 
     private void tulostaSijainnit() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (Pelimerkki pm : this.pelimerkit) {
+            System.out.print(pm.getTyyppi() + " " + pm.getSarake() + " " + pm.getRivi() + "\n");
+        }
     }
 
     private void tulostaPelialue() {
@@ -79,70 +92,49 @@ public class Luola {
         
     }
     
-    public void liiku(char suunta) {
-        Pelimerkki pelaaja = null;
+    public void liiku(Pelimerkki pelimerkki, char suunta) {
         Pelimerkki siirrettava = null;
         
-        int pelaajaSiirtyyRivi = 0;
-        int pelaajaSiirtyySarake = 0;
+        int pelimerkkiSiirtyyRivi = pelimerkki.getRivi();
+        int pelimerkkiSiirtyySarake = pelimerkki.getSarake();
         
-        int siirrettavaSiirtyyRivi = 0;
-        int siirrettavaSiirtyySarake = 0;
+        int siirrettavaSiirtyyRivi = pelimerkki.getRivi();
+        int siirrettavaSiirtyySarake = pelimerkki.getSarake();
         
-        // Pelaaja aina ensimmäinen listassa
-        pelaaja = this.pelimerkit.get(0);
-        
-        if(siirtyykoPelimerkkiPelialueenUlkopuolelle(pelaaja, suunta)) {
+        if(siirtyykoPelimerkkiPelialueenUlkopuolelle(pelimerkki, suunta)) {
             return;
         }      
                      
         if(suunta == 'w') {
             
-            pelaajaSiirtyyRivi = pelaaja.getRivi() - 1;
-            pelaajaSiirtyySarake = pelaaja.getSarake();
-            
-            siirrettava = this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake]; 
-            siirrettavaSiirtyyRivi = pelaaja.getRivi();
-            siirrettavaSiirtyySarake = pelaaja.getSarake();
-            
-            suoritaSiirto(pelaaja, pelaajaSiirtyyRivi, pelaajaSiirtyySarake, siirrettava, siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake);  
+            pelimerkkiSiirtyyRivi -= 1;
+            siirrettava = this.pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
         if(suunta == 's') {
             
-            pelaajaSiirtyyRivi = pelaaja.getRivi() + 1;
-            pelaajaSiirtyySarake = pelaaja.getSarake();
-            
-            siirrettava = this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake]; 
-            siirrettavaSiirtyyRivi = pelaaja.getRivi();
-            siirrettavaSiirtyySarake = pelaaja.getSarake();
-            
-            suoritaSiirto(pelaaja, pelaajaSiirtyyRivi, pelaajaSiirtyySarake, siirrettava, siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake); 
+            pelimerkkiSiirtyyRivi += 1;
+            siirrettava = this.pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
         if(suunta == 'a') {
             
-            pelaajaSiirtyyRivi = pelaaja.getRivi();
-            pelaajaSiirtyySarake = pelaaja.getSarake() - 1;
-            
-            siirrettava = this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake]; 
-            siirrettavaSiirtyyRivi = pelaaja.getRivi();
-            siirrettavaSiirtyySarake = pelaaja.getSarake();
-            
-            suoritaSiirto(pelaaja, pelaajaSiirtyyRivi, pelaajaSiirtyySarake, siirrettava, siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake); 
+            pelimerkkiSiirtyySarake -= 1;
+            siirrettava = this.pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake]; 
         }
         
         if(suunta == 'd') {
                        
-            pelaajaSiirtyyRivi = pelaaja.getRivi();
-            pelaajaSiirtyySarake = pelaaja.getSarake() + 1;
-            
-            siirrettava = this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake]; 
-            siirrettavaSiirtyyRivi = pelaaja.getRivi();
-            siirrettavaSiirtyySarake = pelaaja.getSarake();
-            
-            suoritaSiirto(pelaaja, pelaajaSiirtyyRivi, pelaajaSiirtyySarake, siirrettava, siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake);
+            pelimerkkiSiirtyySarake += 1;
+            siirrettava = this.pelialue[pelimerkkiSiirtyyRivi][pelimerkkiSiirtyySarake];       
         }
+        
+        // Jos hirviöt meinaavat törmätä, ei tehdä siirtoa
+        if(onkoHirvio(siirrettava) && onkoHirvio(pelimerkki)) {
+            return;
+        }
+        
+        suoritaSiirto(pelimerkki, pelimerkkiSiirtyyRivi, pelimerkkiSiirtyySarake, siirrettava, siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake);
     }
 
     private void suoritaSiirto(Pelimerkki pelimerkki, int pelaajaSiirtyyRivi, int pelaajaSiirtyySarake, Pelimerkki siirrettava, int siirrettavaSiirtyyRivi, int siirrettavaSiirtyySarake) {
@@ -151,8 +143,10 @@ public class Luola {
         pelimerkki.setSarake(pelaajaSiirtyySarake);
         this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake] = pelimerkki;
         
+        // Jos pelaaja siirtyy pelaajan päälle, korvataan hirviö pisteellä ja poistetaan hirviö pelistä
         if(onkoHirvio(siirrettava)) {
             this.pelialue[siirrettavaSiirtyyRivi][siirrettavaSiirtyySarake] = new Pelimerkki('.', siirrettavaSiirtyyRivi, siirrettavaSiirtyySarake);
+            this.pelimerkit.remove(siirrettava);
         } else {
             siirrettava.setRivi(siirrettavaSiirtyyRivi);
             siirrettava.setSarake(siirrettavaSiirtyySarake);
@@ -160,28 +154,28 @@ public class Luola {
         }
     }
 
-    private boolean siirtyykoPelimerkkiPelialueenUlkopuolelle(Pelimerkki pelaaja, char suunta) {
+    private boolean siirtyykoPelimerkkiPelialueenUlkopuolelle(Pelimerkki pelimerkki, char suunta) {
        
         boolean reunalla = false; 
         
         switch(suunta) {
             case 'w':
-                if(pelaaja.getRivi() - 1 < 0) {
+                if(pelimerkki.getRivi() - 1 < 0) {
                     reunalla = true;  
                 }
                 break;
             case 's':
-                if(pelaaja.getRivi() + 1 == this.pelialue.length) {
+                if(pelimerkki.getRivi() + 1 == this.pelialue.length) {
                     reunalla = true;
                 }
                 break;
             case 'a':
-                if(pelaaja.getSarake() - 1 < 0) {
+                if(pelimerkki.getSarake() - 1 < 0) {
                     reunalla = true;
                 }
                 break;
             case 'd':
-                if(pelaaja.getSarake() + 1 >= this.pelialue[pelaaja.getSarake()].length) {
+                if(pelimerkki.getSarake() + 1 >= this.pelialue[pelimerkki.getSarake()].length) {
                     reunalla = true;
                 }
                 break;
@@ -193,8 +187,8 @@ public class Luola {
         return reunalla;
     }
     
-    private boolean onkoHirvio(Pelimerkki siirrettava) {
-        if(siirrettava.getTyyppi() == 'h') {
+    private boolean onkoHirvio(Pelimerkki pm) {
+        if(pm.getTyyppi() == 'h') {
             return true;
         }
         return false;
@@ -203,29 +197,31 @@ public class Luola {
     private void liikutaHirvioita(List<Pelimerkki> pelimerkit) {
         for(Pelimerkki pm : pelimerkit) {
             if(pm.getTyyppi() == 'h') {
+                
                 //Arvotaan mihin liikutetaan
-                int hirvioSiirtyyRivi = pm.getRivi();
-                int hirvioSiirtyySarake = pm.getSarake();
+                Random rng = new Random();
+                int arvottuLuku = rng.nextInt(4);
                 
-                //Liikutetaan arvottuun suuntaan
+                // Liiku ylös
+                if(arvottuLuku == 0) {
+                    liiku(pm, 'w');
+                }
                 
-
-
-                siirrettavaSiirtyyRivi = pelaaja.getRivi();
-                siirrettavaSiirtyySarake = pelaaja.getSarake();
-                Pelimerkki siirrettava = this.pelialue[pelaajaSiirtyyRivi][pelaajaSiirtyySarake]; 
+                // Liiku alas
+                if(arvottuLuku == 1 ) {
+                    liiku(pm, 's');
+                }
                 
-                // Ei suoriteta siirtoa jos pelimerkki ja siirrettava pelimerkki ovat molemmat hirvioita
-                if(onkoHirvio(siirrettava) && onkoHirvio(pm)) {
-                    return;
-                }  else {
-                    suoritaSiirto();
+                // Liiku vasemmalle
+                if(arvottuLuku == 2) {
+                    liiku(pm, 'd');
+                }
+                
+                // Liiku oikealle
+                if(arvottuLuku == 3) {
+                    liiku(pm, 'a');
                 }
             }
         }
-    }
-    
-    private void hirvioSiirtyyYlos(Pelimerkki hirvio) {
-        hirvio.
     }
 }
