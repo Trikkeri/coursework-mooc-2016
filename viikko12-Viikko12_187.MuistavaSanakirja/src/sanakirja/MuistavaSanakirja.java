@@ -31,8 +31,8 @@ public class MuistavaSanakirja {
         try {
             tiedosto = new File(this.tiedostonNimi);
             lukija = new Scanner(tiedosto);        
-        } catch(Exception FileNotFoundException) {
-            System.out.println("Tiedosto hukassa!");
+        } catch(FileNotFoundException ex) {
+            System.out.println("Tiedosto hukassa! " + ex.toString());
             return false;
         }
         
@@ -64,8 +64,8 @@ public class MuistavaSanakirja {
             }
            
             fw.close();
-        } catch(Exception IOException) {
-            System.out.println("Ongelmia tiedostoon kirjoittamisessa!");
+        } catch(IOException ex) {
+            System.out.println("Ongelmia tiedostoon kirjoittamisessa! " + ex.toString());
             return false;
         }
         return true;
