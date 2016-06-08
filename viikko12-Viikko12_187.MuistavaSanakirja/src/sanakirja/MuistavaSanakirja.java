@@ -109,6 +109,18 @@ public class MuistavaSanakirja {
     }
 
     private ArrayList<String> haeTallennettavatSanat() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        ArrayList<String> sanat = new ArrayList<>();
+        
+        for (Map.Entry<String, String> entry : this.sanakirja.entrySet()) {
+
+            String verrattavaKey = entry.getKey();
+            String verrattavaValue = entry.getValue();
+            if(!sanat.contains(verrattavaKey) && !sanat.contains(verrattavaValue)) {
+                
+                sanat.add(verrattavaKey + ":" + verrattavaValue +"\n");
+            }
+        }
+        return sanat;
     }
 }

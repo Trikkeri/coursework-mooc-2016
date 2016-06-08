@@ -16,18 +16,23 @@ public class Main {
 //        System.out.println(sanakirja.kaanna("banaani"));
 //        System.out.println(sanakirja.kaanna("ohjelmointi"));
 
-        MuistavaSanakirja sanakirja = new MuistavaSanakirja("src/sanat.txt");
-        boolean onnistui = sanakirja.lataa();
+//        MuistavaSanakirja sanakirja = new MuistavaSanakirja("src/sanat.txt");
+//        boolean onnistui = sanakirja.lataa();
+//
+//        if (onnistui) {
+//          System.out.println("sanakirjan lataaminen onnistui");
+//        }
+//        
+//        sanakirja.lisaa("apina", "monkey");
+//        sanakirja.lisaa("banaani", "banana");
+//        sanakirja.lisaa("ohjelmointi", "programming");
+//
+//        sanakirja.tallenna();
 
-        if (onnistui) {
-          System.out.println("sanakirjan lataaminen onnistui");
-        }
-        
-        sanakirja.lisaa("apina", "monkey");
-        sanakirja.lisaa("banaani", "banana");
-        sanakirja.lisaa("ohjelmointi", "programming");
-
-        sanakirja.tallenna();
+        MuistavaSanakirja s = new MuistavaSanakirja("src/sanat2.txt");
+        s.lataa();
+        s.kaanna("olut");
+        s.tallenna();
 
     }
 }
