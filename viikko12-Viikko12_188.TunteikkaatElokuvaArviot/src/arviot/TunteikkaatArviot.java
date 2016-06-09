@@ -38,7 +38,7 @@ public class TunteikkaatArviot {
 
     public double sananTunne(String sana) {
         
-        List<Integer> tuntemukset = new ArrayList<>();
+        List<Double> tuntemukset = new ArrayList<>();
         int montakoKertaa = 0;
         
         for (String rivi : this.rivit) {
@@ -46,7 +46,7 @@ public class TunteikkaatArviot {
             
             for (int i = 0; i < sanat.length; i++) {
                 if(sanat[i].equalsIgnoreCase(sana)) {
-                    tuntemukset.add(Integer.parseInt(sanat[0]));
+                    tuntemukset.add(Double.parseDouble(sanat[0]));
                     montakoKertaa++;
                 }
             }
@@ -62,29 +62,45 @@ public class TunteikkaatArviot {
     public String sananTunneMerkkijonona(String sana) {
         double tunneLukuna = this.sananTunne(sana);
         
-        if(tunneLukuna <= 1.9) {
+        return tunneMerkkijonona(tunneLukuna);
+    }
+
+    public double lauseenTunne(String lause) {
+        // Pilkotaan lause sanoihin
+        
+        ArrayList<Double> tunteet = new ArrayList<>();
+        
+        String[] sanat = lause.split(" ");
+       
+        for (int i = 0; i < sanat.length; i++) {
+            tunteet.add(sananTunne(sanat[i]));
+        }
+        
+        return laskeKeskiarvo(tunteet, tunteet.size());
+        
+    }
+
+    public String lauseenTunneMerkkijonona(String lause) {
+        double lauseenTunne = this.lauseenTunne(lause);
+        
+        return tunneMerkkijonona(lauseenTunne);
+    }
+
+    public String tunneMerkkijonona(double luku) {
+        if(luku <= 1.9) {
             return "negatiivinen";
-        } else if(tunneLukuna <= 2.1) {
+        } else if(luku <= 2.1) {
             return "neutraali"; 
         } else {
             return "positiivinen";
         }
     }
-
-    public double lauseenTunne(String lause) {
-        return 0.0;
-    }
-
-    public String lauseenTunneMerkkijonona(String lause) {
-        return "";
-    }
-
-    private double laskeKeskiarvo(List<Integer> tuntemukset, int jakaja) {
+    
+    private double laskeKeskiarvo(List<Double> tuntemukset, int jakaja) {
         double summa = 0;
         for (int i = 0; i < tuntemukset.size(); i++) {
             summa += tuntemukset.get(i);
         }
         return summa / jakaja;
     }
-
 }

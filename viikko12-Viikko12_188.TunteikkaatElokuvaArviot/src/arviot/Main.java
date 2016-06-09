@@ -19,13 +19,20 @@ public class Main {
 //        System.out.println(arviot.sananTunne("damme"));
 //        System.out.println(arviot.sananTunne("norris"));
 
+//        List<String> rivit = lueRivit("src/arviot.txt");
+//        TunteikkaatArviot arviot = new TunteikkaatArviot(rivit);
+//        System.out.println(arviot.sananTunneMerkkijonona("poor"));
+//        System.out.println(arviot.sananTunneMerkkijonona("is"));
+//        System.out.println(arviot.sananTunneMerkkijonona("love"));
+//        System.out.println(arviot.sananTunneMerkkijonona("damme"));
+//        System.out.println(arviot.sananTunneMerkkijonona("norris"));
+
         List<String> rivit = lueRivit("src/arviot.txt");
         TunteikkaatArviot arviot = new TunteikkaatArviot(rivit);
-        System.out.println(arviot.sananTunneMerkkijonona("poor"));
-        System.out.println(arviot.sananTunneMerkkijonona("is"));
-        System.out.println(arviot.sananTunneMerkkijonona("love"));
-        System.out.println(arviot.sananTunneMerkkijonona("damme"));
-        System.out.println(arviot.sananTunneMerkkijonona("norris"));
+
+        System.out.println(arviot.lauseenTunne("unicorn is a mythical creature"));
+        System.out.println(arviot.lauseenTunne("chuck norris made a happy meal cry"));
+        System.out.println(arviot.lauseenTunne("the movie was an utter and complete failure"));
         
 //        // alla on valmiina annettuna tiedoston lukemiseen tarvittava koodi
 //        List<String> rivit = lueRivit("src/arviot.txt");
