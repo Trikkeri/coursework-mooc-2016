@@ -12,9 +12,20 @@ public class Kayttoliittyma implements Runnable {
 
     @Override
     public void run() {
+        frame = new JFrame("Swing on");
+        frame.setPreferredSize(new Dimension(400, 200));
+        
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        luoKomponentit(frame.getContentPane());
+        
+        frame.pack();
+        frame.setVisible(true);
     }
 
     private void luoKomponentit(Container container) {
+        JLabel teksti = new JLabel("Moi!");
+        container.add(teksti);
     }
 
     public JFrame getFrame() {
