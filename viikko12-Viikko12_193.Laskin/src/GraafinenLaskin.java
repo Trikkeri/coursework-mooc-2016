@@ -21,14 +21,13 @@ public class GraafinenLaskin implements Runnable {
         
         frame.pack();
         frame.setVisible(true);
-
     }
 
     private void luoKomponentit(Container container) {
         GridLayout tekstikenttienGrid = new GridLayout(3, 1);
         container.setLayout(tekstikenttienGrid);
         
-        JTextField tulos = new JTextField();
+        JTextField tulos = new JTextField("0");
         tulos.setEnabled(false);
         JTextField laskettava = new JTextField();
         
@@ -37,19 +36,21 @@ public class GraafinenLaskin implements Runnable {
         JButton plus = new JButton("+");
         JButton miinus = new JButton("-");
         JButton z = new JButton("z");
+        z.setEnabled(false);
+        
+        LaskimenKuuntelija kk = new LaskimenKuuntelija(plus, miinus, z, tulos, laskettava);
+        
+        plus.addActionListener(kk);
+        miinus.addActionListener(kk);
+        z.addActionListener(kk);
         
         panel.add(plus);
         panel.add(miinus);
         panel.add(z);
         
-        LaskimenKuuntelija kk = new LaskimenKuuntelija(plus, miinus, z, tulos, laskettava);
-        
         container.add(tulos);
         container.add(laskettava);
         container.add(panel);
-        
-        
-        
     }
 
     public JFrame getFrame() {
