@@ -10,14 +10,17 @@ public class LaskimenKuuntelija implements ActionListener {
     private JButton miinus;
     private JButton z;
     private JTextField laskettava;
-    private JTextField tulos;
+    private JTextField tulosKentta;
+    private Laskuoperaatio laskin;
     
     public LaskimenKuuntelija(JButton plus, JButton miinus, JButton z, JTextField tulos, JTextField laskettava) {
         this.plus = plus;
         this.miinus = miinus;
         this.z = z;
         this.laskettava = laskettava;
-        this.tulos = tulos;
+        this.tulosKentta = tulos;
+        
+        laskin = new Laskuoperaatio();
     }
     
     @Override
@@ -34,17 +37,20 @@ public class LaskimenKuuntelija implements ActionListener {
         }
         
         if(ae.getSource() == plus) {
-            int summa = laskettavaNumero + Integer.parseInt(this.tulos.getText());
-            this.tulos.setText(String.valueOf(summa));
+            laskin.plus(laskettavaNumero);
+            
         } else if(ae.getSource() == miinus) {
-            int erotus = Integer.parseInt(this.tulos.getText()) - laskettavaNumero;
-            this.tulos.setText(String.valueOf(erotus));
+            laskin.miinus(laskettavaNumero);
         } else {
-            this.tulos.setText("0");         
+            laskin.nollaa();
+            this.tulosKentta.setText("0");         
         }
         
+        int tulos = laskin.tulos();
+        this.tulosKentta.setText("" + tulos);
+        
         // Poistetaan Z painike pois käytöstä, jos tulos on 0
-        if(tulos.getText().equals("0")) {
+        if(tulos == 0) {
             z.setEnabled(false);
         }  else {
             this.z.setEnabled(true);
