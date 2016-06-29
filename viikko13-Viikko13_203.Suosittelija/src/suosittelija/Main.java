@@ -1,26 +1,35 @@
 package suosittelija;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import suosittelija.comparator.HenkiloComparator;
 import suosittelija.domain.Arvio;
-import suosittelija.domain.ArvioRekisteri;
 import suosittelija.domain.Elokuva;
+import suosittelija.domain.Henkilo;
 
 
 public class Main {
 
     public static void main(String[] args) {
         // Testaa luokkiesi toteutusta täällä
-        Elokuva hiljaisetSillat = new Elokuva("Hiljaiset sillat");
-        Elokuva eraserhead = new Elokuva("Eraserhead");
+Henkilo matti = new Henkilo("Matti");
+Henkilo pekka = new Henkilo("Pekka");
+Henkilo mikke = new Henkilo("Mikke");
+Henkilo thomas = new Henkilo("Thomas");
 
-        ArvioRekisteri rekisteri = new ArvioRekisteri();
-        rekisteri.lisaaArvio(eraserhead, Arvio.HUONO);
-        rekisteri.lisaaArvio(eraserhead, Arvio.HUONO);
-        rekisteri.lisaaArvio(eraserhead, Arvio.HYVA);
+Map<Henkilo, Integer> henkiloidenSamuudet = new HashMap<>();
+henkiloidenSamuudet.put(matti, 42);
+henkiloidenSamuudet.put(pekka, 134);
+henkiloidenSamuudet.put(mikke, 8);
+henkiloidenSamuudet.put(thomas, 82);
 
-        rekisteri.lisaaArvio(hiljaisetSillat, Arvio.HYVA);
-        rekisteri.lisaaArvio(hiljaisetSillat, Arvio.OK);
+List<Henkilo> henkilot = Arrays.asList(matti, pekka, mikke, thomas);
+System.out.println("Henkilöt ennen järjestämistä: " + henkilot);
 
-        System.out.println("Kaikki arviot: " + rekisteri.elokuvienArviot());
-        System.out.println("Arviot Eraserheadille: " + rekisteri.annaArviot(eraserhead));
+Collections.sort(henkilot, new HenkiloComparator(henkiloidenSamuudet));
+System.out.println("Henkilöt järjestämisen jälkeen: " + henkilot);
     }
 }
