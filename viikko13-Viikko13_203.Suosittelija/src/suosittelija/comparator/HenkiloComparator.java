@@ -14,7 +14,7 @@ public class HenkiloComparator implements Comparator<Henkilo> {
 
     @Override
     public int compare(Henkilo t, Henkilo t1) {
-        return t1.getNimi().compareTo(t1.getNimi());
+        return this.henkiloidenSamuudet.get(t1).compareTo(this.henkiloidenSamuudet.get(t));
     }
     
 }
