@@ -5,8 +5,7 @@ import lukija.ehdot.*;
 public class Main {
 
     public static void main(String[] args) {
-//        String osoite = "http://www.gutenberg.org/cache/epub/2554/pg2554.txt";
-        String osoite = "http://pheer.no-ip.org/tekstitesti.txt";
+        String osoite = "http://www.gutenberg.org/cache/epub/2554/pg2554.txt";
         GutenbergLukija kirja = new GutenbergLukija(osoite);
 
 //        Ehto ehto = new SisaltaaSanan("beer");
@@ -21,13 +20,11 @@ public class Main {
 
 //        Ehto ehto = new Ei( new PituusVahintaan(10) );
 
-//        Ehto ehto = new VahintaanYksi(
-//                        new SisaltaaSanan("beer"),
-//                        new SisaltaaSanan("milk"),
-//                        new SisaltaaSanan("oil")
-//                    );
-        
-        Ehto ehto = new VahintaanYksi(new SisaltaaSanan("java"), new SisaltaaSanan("ruby"),new SisaltaaSanan("c++"));
+        Ehto ehto = new VahintaanYksi(
+                        new SisaltaaSanan("beer"),
+                        new SisaltaaSanan("milk"),
+                        new SisaltaaSanan("oil")
+                    );
 
         for (String rivi : kirja.rivitJoilleVoimassa(ehto)) {
             System.out.println(rivi);
