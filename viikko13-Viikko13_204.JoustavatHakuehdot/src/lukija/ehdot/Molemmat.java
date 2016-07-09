@@ -11,10 +11,7 @@ public class Molemmat implements Ehto {
     }
     
     @Override
-    public boolean toteutuu(String rivi) {
-        System.out.println(ehto1.toteutuu(rivi));
-        System.out.println(ehto2.toteutuu(rivi));
-        
+    public boolean toteutuu(String rivi) {      
         if(ehto1.toteutuu(rivi) && ehto2.toteutuu(rivi)) {
             return true;
         }
