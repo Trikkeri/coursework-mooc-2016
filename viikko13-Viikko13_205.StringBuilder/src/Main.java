@@ -12,34 +12,23 @@ public class Main {
     }
 
     public static String muotoile(int[] t) {
-        
         StringBuilder sb = new StringBuilder();
-        
-        sb.append("{\n");
+        sb.append("{");
                
         for (int i = 0; i < t.length; i++) {   
             // Jos ollaan lisäämässä riville ensimmäistä lukua niin laitetaan alkuun välilyönti
-            if((i + 1) % 4 == 1) {
-                sb.append(" ");
+            if(i % 4 == 0) {
+                sb.append("\n ");
             }
             
+            sb.append(t[i]);
             // Jos ollaan lisäämässä viimeistä lukua, ei lisätä pilkkua perään, muutoin lisätään
-            if(i == t.length - 1) {
-                sb.append(t[i]);
-            } else {
-                sb.append(t[i]).append(", ");
-            }
-            
-            // Lisätään rivinvaihto, joka neljännelle luvulle ellei kyseessä ole viimeinen rivi
-            if(i < t.length - 1) {
-                if((i + 1) % 4 == 0) {
-                    sb.append("\n");
-                }
-            }
+            if(i != t.length - 1) {
+                sb.append(", ");
+            } 
         }
         
         sb.append("\n}");
-        
         return sb.toString();
     }
 }
