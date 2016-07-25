@@ -31,14 +31,30 @@ public class Hirsipuu {
     
     public boolean arvaa(Character kirjain) {
         this.tehdytArvaukset.add(kirjain);
-        this.sanalista.
         
-        return false;
+        if(this.arvattava.contains(String.valueOf(kirjain))) {
+            return true;
+        } else {
+            this.arvauksiaJaljella -= 1;
+            return false;
+        }
     }
 
     
     public String sana() {
-        return "-----";
+        
+        char[] arvattavaSana = this.arvattava.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        
+        for(char merkki : arvattavaSana) {
+            if(this.tehdytArvaukset.contains(merkki)) {
+                sb.append(merkki);
+            } else {
+                sb.append("-");
+            }
+        }
+        
+        return sb.toString();
     }
 
     public String oikeaSana() {
@@ -46,10 +62,9 @@ public class Hirsipuu {
     }
 
     public boolean onLoppu() {
-        if(this.arvauksiaJaljella == 0) {
+        if(this.arvauksiaJaljella == 0 || this.sana().equals(arvattava)) {
             return true;
         }
-        
         return false;
     }
 }
