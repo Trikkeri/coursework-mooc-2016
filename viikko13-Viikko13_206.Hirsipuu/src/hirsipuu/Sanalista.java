@@ -65,7 +65,6 @@ public class Sanalista {
                     if(merkit[i] != '-') {
                         // Vertaillaan merkkejä ja tallennetaan tulos taulukkoon
                         if(sana.charAt(i) == merkit[i]) {
-                            System.out.println("MERKIT MÄTSÄÄ");
                             sopivaMerkki.add(true);
                         } else {
                             sopivaMerkki.add(false);
