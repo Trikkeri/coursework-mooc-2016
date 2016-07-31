@@ -11,10 +11,12 @@ public class Kayttoliittyma implements Runnable {
     private JFrame frame;
     private Matopeli matopeli;
     private int sivunPituus;
+    private Piirtoalusta piirtoalusta;
 
     public Kayttoliittyma(Matopeli matopeli, int sivunPituus) {
         this.matopeli = matopeli;
         this.sivunPituus = sivunPituus;
+        this.piirtoalusta = new Piirtoalusta(matopeli, sivunPituus);
     }
 
     @Override
@@ -36,10 +38,17 @@ public class Kayttoliittyma implements Runnable {
     public void luoKomponentit(Container container) {
         // Huom! Luo ensin piirtoalusta jonka lisäät container-olioon
         // Luo vasta tämän jälkeen näppäimistönkuuntelija, jonka lisäät frame-oliolle
+        container.add(piirtoalusta);
+        Nappaimistonkuuntelija nk = new Nappaimistonkuuntelija(this.matopeli.getMato());
+        frame.addKeyListener(nk);
     }
 
 
     public JFrame getFrame() {
         return frame;
+    }
+    
+    public Paivitettava getPaivitettava() {
+        return this.piirtoalusta;
     }
 }
