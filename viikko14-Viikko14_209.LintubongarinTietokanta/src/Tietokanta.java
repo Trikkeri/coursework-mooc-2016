@@ -1,75 +1,55 @@
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Tietokanta {
-    private Scanner lukija;
-    private Havainto havainto;
+    private List<Lintu> havaintolista;
     
-    public Tietokanta(Scanner lukija) {
-        this.lukija = lukija;
-        this.havainto = new Havainto();
+    public Tietokanta() {
+        this.havaintolista = new ArrayList<>();
     }
     
-    public void kaynnista() {
-        String syote = "";
+    public void lisaaLintu(String nimi, String nimiLatinaksi) {
+        Lintu lisattavaLintu = new Lintu(nimi, nimiLatinaksi);
         
-        while(true) {
-            System.out.print("? ");
-            syote = lukija.nextLine().toLowerCase();
-            
-            switch(syote) {
-                case "lisaa": 
-                    lisaaLintu();
-                    break;
-                    
-                case "havainto":
-                    lisaaHavainto();
-                    break;
-                    
-                case "tilasto":
-                    tulostaTilasto();
-                    break;
-                    
-                case "nayta":
-                    tulostaLinnunTiedot();
-                    break;
-                    
-                case "lopeta":
-                    return;
+        if(havaintolista.contains(lisattavaLintu)) {
+            System.out.println("Lintu on jo lisättynä tietokannassa!");
+        } else {
+            havaintolista.add(new Lintu(nimi, nimiLatinaksi));
+        }
+    }
+    
+    public void lisaaHavainto(String suomalinenNimi) {
+        if(onkoLintuOlemassa(suomalinenNimi)) {
+            for(Lintu lintu : this.havaintolista) {
+                if(lintu.getsuomalainenNimi().equalsIgnoreCase(suomalinenNimi)) {
+                    lintu.lintuHavaittu();
+                }
             }
-            
-            
+        } else {
+            System.out.println("Ei ole lintu!");
         }
     }
     
-    private void lisaaLintu() {
-        System.out.print("Nimi: ");
-        String nimiSuomeksi = lukija.nextLine();
-        System.out.print("Latinankielinen nimi: ");
-        String nimiLatinaksi = lukija.nextLine();
-        havainto.lisaaLintu(nimiSuomeksi, nimiLatinaksi);
+    public List<Lintu> getHavaintolista() {
+        return havaintolista;
     }
-    
-    private void lisaaHavainto() {
-        System.out.print("Mikä havaittu? ");
-        String syote = lukija.nextLine();
-        havainto.lisaaHavainto(syote);
-    }
-    
-    private void tulostaTilasto() {
-        List<Lintu> tilasto = havainto.getHavaintolista();
-        tilasto.forEach(System.out::println);
-    }
-    
-    private void tulostaLinnunTiedot() {
-        System.out.print("Mikä? ");
-        String syote = lukija.nextLine();
-        Lintu lintu = havainto.haeLintu(syote);
-        
-        if(lintu != null) {
-            System.out.print(lintu + "\n");
+
+    private boolean onkoLintuOlemassa(String suomalainenNimi) {
+        for(Lintu lintu : this.havaintolista) {
+                if(lintu.getsuomalainenNimi().equalsIgnoreCase(suomalainenNimi)) {
+                    return true;
+                }
         }
+        return false;
     }
     
+    public Lintu haeLintu(String suomalainenNimi) {
+        for(Lintu lintu : this.havaintolista) {
+                if(lintu.getsuomalainenNimi().equalsIgnoreCase(suomalainenNimi)) {
+                    return lintu;
+                }
+        }
+        return null;
+    }
 }
