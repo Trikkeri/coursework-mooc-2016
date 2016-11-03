@@ -16,4 +16,4 @@ Notable exercises can be found at last exercise of each week (week 7 and forward
 * https://github.com/Trikkeri/coursework-mooc-2016/tree/master/viikko13-Viikko13_207.Matopeli/src/matopeli
 * week 14
 
-Excercises above are larger exercises than most found in the course. Most of the exercises above are self-designed (program structure, implementation). User interface and what the program should do are predefined in exercise by the course.
+Exercises above are larger than most found in the course. Most of the exercises above are self-designed (program structure, implementation). User interface and what the program should do are predefined in exercise by the course. A few exercises contain some example implementation as a base and objective of the exercise has been to expand the implementation further.
